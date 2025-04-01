@@ -1,7 +1,9 @@
 package com.demo.jbank.controller;
 
 import com.demo.jbank.controller.dto.CreateWalletDto;
+import com.demo.jbank.controller.dto.DepositMoneyDto;
 import com.demo.jbank.service.WalletService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,14 +29,17 @@ public class WalletController {
         return ResponseEntity.created(URI.create("/wallets/" + wallet.getWalletId().toString())).build();
     }
 
-    @DeleteMapping(path = "/{walletId}")
-    public ResponseEntity<Void> deleteWallet(@PathVariable("walletId") UUID walletId) {
+    @PostMapping(path = "/{walletId}/deposit")
+    public ResponseEntity<Void> depositMoney(@PathVariable("walletId") UUID walletId,
+                                             @RequestBody @Valid DepositMoneyDto dto,
+                                             HttpServletRequest servletRequest) {
 
-        var deleted = walletService.deleteWallet(walletId);
+        walletService.depositMoney(
+                walletId,
+                dto,
+                servletRequest.getAttribute("x-user-ip").toString());
 
-        return deleted ?
-                ResponseEntity.noContent().build() :
-                ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
 }
