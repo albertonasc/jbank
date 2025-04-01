@@ -1,9 +1,8 @@
 package com.demo.jbank.controller;
 
 import com.demo.jbank.controller.dto.CreateWalletDto;
-import com.demo.jbank.exception.WalletDataAlreadyExistException;
 import com.demo.jbank.service.WalletService;
-import org.springframework.http.ProblemDetail;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class WalletController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createWallet(@RequestBody CreateWalletDto dto) {
+    public ResponseEntity<Void> createWallet(@RequestBody @Valid CreateWalletDto dto) {
 
         var wallet = walletService.createWallet(dto);
 
