@@ -27,14 +27,4 @@ public class WalletController {
         return ResponseEntity.created(URI.create("/wallets/" + wallet.getWalletId().toString())).build();
     }
 
-    @ExceptionHandler(WalletDataAlreadyExistException.class)
-    public ProblemDetail handleWalletDataAlreadyExistException(WalletDataAlreadyExistException e) {
-        var problemDetails =  ProblemDetail.forStatus(422);
-
-        problemDetails.setTitle("Wallet data already exists");
-        problemDetails.setDetail(e.getMessage());
-
-        return problemDetails;
-    }
-
 }
