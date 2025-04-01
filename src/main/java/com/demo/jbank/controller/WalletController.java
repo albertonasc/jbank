@@ -1,12 +1,11 @@
 package com.demo.jbank.controller;
 
 import com.demo.jbank.controller.dto.CreateWalletDto;
+import com.demo.jbank.exception.WalletDataAlreadyExistException;
 import com.demo.jbank.service.WalletService;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -26,6 +25,16 @@ public class WalletController {
         var wallet = walletService.createWallet(dto);
 
         return ResponseEntity.created(URI.create("/wallets/" + wallet.getWalletId().toString())).build();
+    }
+
+    @ExceptionHandler(WalletDataAlreadyExistException.class)
+    public ProblemDetail handleWalletDataAlreadyExistException(WalletDataAlreadyExistException e) {
+        var problemDetails =  ProblemDetail.forStatus(422);
+
+        problemDetails.setTitle("Wallet data already exists");
+        problemDetails.setDetail(e.getMessage());
+
+        return problemDetails;
     }
 
 }
