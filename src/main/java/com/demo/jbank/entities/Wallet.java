@@ -29,6 +29,9 @@ public class Wallet {
     public Wallet() {
     }
 
+    @Version
+    private Long version;
+
     public UUID getWalletId() {
         return walletId;
     }
@@ -67,5 +70,13 @@ public class Wallet {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
